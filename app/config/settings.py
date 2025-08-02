@@ -43,6 +43,15 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str = "YOUR_SECRET_KEY"  # should be overridden in .env
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    
+    # AWS/S3 Configuration
+    AWS_ENDPOINT_URL: str = Field(default="http://localhost:4566", env="AWS_ENDPOINT_URL")
+    AWS_ACCESS_KEY_ID: str = Field(default="test", env="AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY: str = Field(default="test", env="AWS_SECRET_ACCESS_KEY")
+    AWS_DEFAULT_REGION: str = Field(default="us-east-1", env="AWS_DEFAULT_REGION")
+    S3_BUCKET_NAME: str = Field(default="mvp-dating-bucket-2025", env="S3_BUCKET_NAME")
+    S3_TEMP_FOLDER: str = Field(default="tmp", env="S3_TEMP_FOLDER")
+    S3_PRESIGNED_URL_EXPIRATION: int = Field(default=3600, env="S3_PRESIGNED_URL_EXPIRATION")  # 1 hour default
 
 
 # Initialize settings

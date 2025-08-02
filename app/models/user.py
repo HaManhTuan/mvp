@@ -15,7 +15,7 @@ class User(BaseModel):
     username = Column(String, unique=True, index=True, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     phone = Column(String, unique=True, index=True, nullable=True)
-    gender = Column(Enum(GenderEnum), nullable=False)
+    gender = Column(Enum(GenderEnum), nullable=False, default=GenderEnum.other)
     full_name = Column(String, nullable=True)
     bio = Column(String, nullable=True)
     date_of_birth = Column(Date, nullable=True)
@@ -26,11 +26,13 @@ class User(BaseModel):
     is_active = Column(Boolean, default=True, nullable=False)
     is_superuser = Column(Boolean, default=False, nullable=False)
     
-    def __init__(self, username, email, password, full_name=None, is_superuser=False):
+    def __init__(self, username, email, password, full_name=None, is_superuser=False, gender=None, token_balance=0):
         """Initialize a new user"""
         self.username = username
         self.email = email
         self.full_name = full_name
+        self.gender = gender
+        self.token_balance = token_balance
         self.set_password(password)
         self.is_superuser = is_superuser
     

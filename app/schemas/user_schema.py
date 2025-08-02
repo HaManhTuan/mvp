@@ -2,11 +2,19 @@ from typing import Optional
 from pydantic import EmailStr, Field, field_validator
 from datetime import datetime
 from app.schemas.base_schema import BaseSchema
+import enum
+
+class GenderEnum(str, enum.Enum):
+    male = "male"
+    female = "female"
+    other = "other"
 
 class UserBase(BaseSchema):
     """Base schema for user data"""
     username: str = Field(..., min_length=3, max_length=50)
     email: EmailStr
+    gender: Optional[GenderEnum] = GenderEnum.other
+    token_balance: int = 0
     full_name: Optional[str] = None
     is_active: bool = True
     is_superuser: bool = False
@@ -32,7 +40,7 @@ class UserUpdate(BaseSchema):
 
 class UserResponse(UserBase):
     """Schema for user response"""
-    id: str
+    id: int
     created_at: datetime
     updated_at: datetime
 

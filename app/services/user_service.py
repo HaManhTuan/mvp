@@ -2,7 +2,7 @@ from typing import Optional, List, Dict, Any
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.services.base_service import BaseService
 from app.repositories.user_repository import user_repository
-from app.models.user import User
+from app.models.user import GenderEnum, User
 from app.utils.logger import get_logger
 
 # Initialize logger
@@ -23,8 +23,8 @@ class UserService(BaseService[User, type(user_repository)]):
         """Get user by username"""
         logger.debug(f"Looking up user by username: {username}")
         return await user_repository.get_by_username(db, username=username)
-    
-    async def create_user(self, db: AsyncSession, username: str, email: str, password: str, full_name: str = None, is_superuser: bool = False) -> User:
+
+    async def create_user(self, db: AsyncSession, username: str, email: str, password: str, gender: GenderEnum, full_name: str = None, is_superuser: bool = False) -> User:
         """Create a new user"""
         logger.info(f"Creating new user with username: {username}, email: {email}")
         
@@ -45,7 +45,8 @@ class UserService(BaseService[User, type(user_repository)]):
             email=email,
             password=password,
             full_name=full_name,
-            is_superuser=is_superuser
+            is_superuser=is_superuser,
+            gender=gender
         )
     
     async def authenticate_user(self, db: AsyncSession, username: str, password: str) -> Optional[User]:

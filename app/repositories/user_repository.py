@@ -1,5 +1,5 @@
 from app.repositories.base_repository import BaseRepository
-from app.models.user import User
+from app.models.user import GenderEnum, User
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import Optional
@@ -19,15 +19,17 @@ class UserRepository(BaseRepository[User]):
         """Get user by username"""
         result = await db.execute(select(User).filter(User.username == username))
         return result.scalar_one_or_none()
-    
-    async def create_user(self, db: AsyncSession, username: str, email: str, password: str, full_name: str = None, is_superuser: bool = False) -> User:
+
+    async def create_user(self, db: AsyncSession, username: str, email: str, password: str, full_name: str = None, is_superuser: bool = False, gender: GenderEnum = GenderEnum.other) -> User:
         """Create a new user"""
         user = User(
             username=username,
             email=email,
             password=password,
             full_name=full_name,
-            is_superuser=is_superuser
+            is_superuser=is_superuser,
+            gender=gender,
+            token_balance=0  # Default token balance
         )
         db.add(user)
         await db.commit()

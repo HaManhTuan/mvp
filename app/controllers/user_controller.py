@@ -28,6 +28,7 @@ async def create_user(user_in: UserCreate, db: AsyncSession = Depends(get_db)):
             username=user_in.username,
             email=user_in.email,
             password=user_in.password,
+            gender=user_in.gender,
             full_name=user_in.full_name
         )
         return DataResponse(data=user)
